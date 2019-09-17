@@ -13,7 +13,13 @@ h1 {
     margin: 40px;
     text-align: center;
     font-size: 40px;
-    color: rgba(0, 0, 0, .65);
+    color: rgba(0, 0, 0, .7);
+}
+
+.text {
+    padding: 10px 0;
+    font-size: 16px;
+    color: grey;
 }
 
 .main-container {
@@ -110,6 +116,12 @@ h1 {
     box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.2);
 }
 
+.hello-text {
+    text-align: center;
+    font-size: 18px;
+    color: rgba(0, 0, 0, .7);
+}
+
 .square {
     box-sizing: border-box;
     border: solid 4px gray;
@@ -136,14 +148,12 @@ h1 {
     flex-wrap: wrap;
 }
 
-.text {
-    font-size: 35px;
-    font-weight: bold;
-    padding: 10px 0;
-    letter-spacing: 2px;
-    color: grey;
-}
-
 .leaderBoard {
     margin: 40px;
+}
+
+.leaderBoard_text {
+    font-size: 35px;
+    font-weight: bold;
+    letter-spacing: 2px;
 }
