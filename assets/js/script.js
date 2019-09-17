@@ -73,7 +73,7 @@ function getSelecValue() {
 		containerHard.style.display = 'none';
 		lower = 26;
     	upper = 40;
-    	timeToClick = 3000;
+    	timeToClick = 1500;
     	resetData();
 	} else if(level === 'hard') {
 		containerEasy.style.display = 'none';
