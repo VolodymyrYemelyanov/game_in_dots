@@ -67,7 +67,8 @@ function letsPlay() {
           containerPlay.style.display = 'none';
           containerPlayAgain.style.display = 'block';
           winnerObj.name = 'AI';
-          winnerObj.time = 'rightNow';
+          winnerObj.time = 'Now';
+          storeData();
         }
       }
       // mark it not ready after given period
