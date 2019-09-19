@@ -1,21 +1,38 @@
-const btn = document.getElementById('btn');
+const btnPlay = document.getElementById('btnPlay');
+const btnPlayAgain = document.getElementById('btnPlayAgain');
+const containerPlay = document.querySelector('.form__play');
+const containerPlayAgain = document.querySelector('.form__playAgain');
 const containerEasy = document.getElementById('container-easy');
 const containerHard = document.getElementById('container-hard');
 const getSquare = document.getElementsByClassName('square');
 const gatName = document.querySelector('#name-input');
 const btnGatName = document.querySelector('#btnGatName');
+const leadInfo = document.getElementById('leadInfo');
+const leadNameInfo = document.querySelector('.nameLead');
+const leadTimeInfo = document.querySelector('.timeLead');
+const winnerObj = {};
+let timeoutID = null;
 let squareNumber = getSquare.length;
 let nameValue = null,
+  dataToStore = null,
   level = null,
   lower = 1,
   upper = 25,
-  countRed = 0,
-  countGreen = 0,
-  timeToClick = 1000,
-  items = [];
+  item = null,
+  squareNumberByLevel = 25;
+(countRed = 0), (countGreen = 0), (timeToClick = 1000), (items = []);
 
-btn.addEventListener('click', function() {
+btnPlayAgain.addEventListener('click', function() {
+  showStoredData();
+  item = null;
+  resetGame();
+  randomNomber();
+  letsPlay();
+});
+
+btnPlay.addEventListener('click', function() {
   nameValue = gatName.value;
+  showStoredData();
   // check if level choosed and entered name
   if ((level === 'easy' || level === 'hard') && nameValue.length >= 1) {
     document.getElementById('hello-text').innerHTML = 'Lets play ' + nameValue;
@@ -27,11 +44,14 @@ btn.addEventListener('click', function() {
 });
 
 function letsPlay() {
-  setTimeout(function loop() {
-    let item = items.shift();
+  timeoutID = setTimeout(function loop() {
+    if (item === 0) {
+      return;
+    }
+    item = items.shift();
     let square = document.getElementById(item.id);
     square.style.backgroundColor = 'lightblue';
-
+    // debugger;
     // mark the item ready
     item.ready = true;
     setTimeout(() => {
@@ -39,6 +59,16 @@ function letsPlay() {
       if (!item.clicked) {
         square.style.backgroundColor = 'red';
         countRed++;
+        if (countRed > Math.floor(squareNumberByLevel / 2)) {
+          document.getElementById('hello-text').innerHTML = 'AI is a winner :(';
+          item = 0;
+          resetGame();
+          // put the button 'Play again'
+          containerPlay.style.display = 'none';
+          containerPlayAgain.style.display = 'block';
+          winnerObj.name = 'AI';
+          winnerObj.time = 'rightNow';
+        }
       }
       // mark it not ready after given period
       item.ready = false;
@@ -52,15 +82,34 @@ function letsPlay() {
         item.clicked = true;
         square.style.backgroundColor = 'green';
         countGreen++;
+
+        if (countGreen > Math.floor(squareNumberByLevel / 2)) {
+          document.getElementById('hello-text').innerHTML =
+            nameValue + ' you are a winner!!!';
+          item = 0;
+          resetGame();
+          // put the button 'Play again'
+          containerPlay.style.display = 'none';
+          containerPlayAgain.style.display = 'block';
+          winnerObj.name = nameValue;
+          winnerObj.time = 'rightNow';
+          storeData();
+        }
       }
     });
-
-    if (countGreen > Math.floor(upper / 2)) {
-      console.log('Geen is winner!');
-    } else if (countRed > Math.floor(upper / 2)) {
-      console.log('Red is winner!');
-    }
   }, 3000);
+}
+
+function storeData() {
+  dataToStore = JSON.stringify(winnerObj);
+  localStorage.setItem('Winner', dataToStore);
+}
+
+function showStoredData() {
+  let showWinner = JSON.parse(localStorage.getItem('Winner'));
+  leadNameInfo.innerHTML = showWinner.name;
+  leadTimeInfo.innerHTML = showWinner.time;
+  leadInfo.style.display = 'block';
 }
 
 function randomNomber() {
@@ -76,28 +125,25 @@ function randomNomber() {
   }
 }
 
-function getSelecValue() {
+function resetGame() {
   level = document.getElementById('select-level').value;
+  resetData();
   if (level === 'easy') {
     containerEasy.style.display = 'flex';
     containerHard.style.display = 'none';
     lower = 26;
     upper = 40;
-    timeToClick = 1500;
-    resetData();
+    squareNumberByLevel = 15;
+    timeToClick = 1000;
   } else if (level === 'hard') {
     containerEasy.style.display = 'none';
     containerHard.style.display = 'flex';
     lower = 1;
     upper = 25;
-    timeToClick = 1000;
-    resetData();
+    squareNumberByLevel = 25;
+    timeToClick = 900;
   }
 }
-
-// function getSelecValue() {
-// 	return null;
-// }
 
 function resetData() {
   items = [];
