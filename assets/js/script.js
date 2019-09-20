@@ -23,7 +23,9 @@ let nameValue = null,
 (countRed = 0), (countGreen = 0), (timeToClick = 1000), (items = []);
 
 btnPlayAgain.addEventListener('click', function() {
-  showStoredData();
+  if (winnerObj.name) {
+    showStoredData();
+  }
   item = null;
   resetGame();
   randomNomber();
@@ -32,7 +34,9 @@ btnPlayAgain.addEventListener('click', function() {
 
 btnPlay.addEventListener('click', function() {
   nameValue = gatName.value;
-  showStoredData();
+  if (winnerObj.name) {
+    showStoredData();
+  }
   // check if level choosed and entered name
   if ((level === 'easy' || level === 'hard') && nameValue.length >= 1) {
     document.getElementById('hello-text').innerHTML = 'Lets play ' + nameValue;
@@ -67,7 +71,7 @@ function letsPlay() {
           containerPlay.style.display = 'none';
           containerPlayAgain.style.display = 'block';
           winnerObj.name = 'AI';
-          winnerObj.time = 'Now';
+          winnerObj.time = 'Last Winner';
           storeData();
         }
       }
@@ -93,7 +97,7 @@ function letsPlay() {
           containerPlay.style.display = 'none';
           containerPlayAgain.style.display = 'block';
           winnerObj.name = nameValue;
-          winnerObj.time = 'rightNow';
+          winnerObj.time = 'Last Winner';
           storeData();
         }
       }
