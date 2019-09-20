@@ -12,6 +12,7 @@ const leadNameInfo = document.querySelector('.nameLead');
 const leadTimeInfo = document.querySelector('.timeLead');
 const winnerObj = {};
 let timeoutID = null;
+let showWinner;
 let squareNumber = getSquare.length;
 let nameValue = null,
   dataToStore = null,
@@ -21,6 +22,8 @@ let nameValue = null,
   item = null,
   squareNumberByLevel = 25;
 (countRed = 0), (countGreen = 0), (timeToClick = 1000), (items = []);
+
+showWinner = JSON.parse(localStorage.getItem('Winner'));
 
 btnPlayAgain.addEventListener('click', function() {
   if (winnerObj.name) {
@@ -33,10 +36,11 @@ btnPlayAgain.addEventListener('click', function() {
 });
 
 btnPlay.addEventListener('click', function() {
-  nameValue = gatName.value;
-  if (winnerObj.name) {
+  if (winnerObj.name || showWinner) {
+    console.log('hello');
     showStoredData();
   }
+  nameValue = gatName.value;
   // check if level choosed and entered name
   if ((level === 'easy' || level === 'hard') && nameValue.length >= 1) {
     document.getElementById('hello-text').innerHTML = 'Lets play ' + nameValue;
@@ -111,7 +115,7 @@ function storeData() {
 }
 
 function showStoredData() {
-  let showWinner = JSON.parse(localStorage.getItem('Winner'));
+  showWinner = JSON.parse(localStorage.getItem('Winner'));
   leadNameInfo.innerHTML = showWinner.name;
   leadTimeInfo.innerHTML = showWinner.time;
   leadInfo.style.display = 'block';
